@@ -51,7 +51,7 @@ class DatasetArgument(CommonArgument):
     Dataset Argument class
     """
 
-    batch_size: int = 1 # 批次大小默认为 1
+    batch_size: int = 1 
 
 
 class TrainArgument(CommonArgument):
@@ -81,6 +81,6 @@ class PredictArgument(CommonArgument):
     Predict Argument class
     """
 
-    checkpoint_path: str
+    checkpoint: str
 
     output_dir: str

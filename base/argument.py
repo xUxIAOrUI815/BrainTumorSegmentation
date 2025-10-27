@@ -69,7 +69,7 @@ class TrainArgument(CommonArgument):
 
     weight_decay: float = 1e-5  # 权重衰减
 
-    checking_dir: str       # 检查点目录
+    checkpoint_dir: str       # 检查点目录
 
     checkpoint_prefix: str  # 检查点前缀
 

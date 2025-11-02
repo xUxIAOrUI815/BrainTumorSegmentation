@@ -14,7 +14,6 @@ class Trainer(BaseTrainer):
     def __init__(self, opt: BaseTrainer.Options) -> None:
         super().__init__(opt)
 
-        #TODO 损失函数考虑修改
         self.loss_func = DiceLoss()
 
     def forward_loss(self, inferer: nn.Module, batch: TensorDict) -> torch.Tensor:
@@ -26,3 +25,6 @@ class Trainer(BaseTrainer):
         probs = inferer(image)
         loss = self.loss_func(probs, label)
         return loss
+
+# TODO 确认是否需要进行数据转换，检查输入和输出数据的格式和通道数、标签数、编码方式，是否需要转成one-hot编码
+# TODO 尝试其他损失函数

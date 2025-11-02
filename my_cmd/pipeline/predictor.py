@@ -17,18 +17,18 @@ class Predictor(BasePredictor):
     @dataclass(kw_only = True)
     class Options(BasePredictor.Options):
         """ Options for Predictor. """
-        sw_roi_sizes: List[int]
-        sw_overlap_ratio: float
-        sw_batch_size: int = 1
+        sw_roi_sizes: List[int]     # 滑动窗口的感兴趣区域大小
+        sw_overlap_ratio: float     # 窗口之间的重叠比例
+        sw_batch_size: int = 1      # 滑动窗口的批量大小
 
     def __init__(self, opt: Options) -> None:
         super().__init__(opt)
 
         self.options = opt
         self.inferer = SlidingWindowInferer(
-            roi_size = opt.sw_roi_sizes,
-            sw_batch_size = opt.sw_batch_size,
-            overlap = opt.sw_overlap_ratio,
+            roi_size = opt.sw_roi_sizes,        # 每个窗口的大小
+            sw_batch_size = opt.sw_batch_size,  # 并行处理的窗口数
+            overlap = opt.sw_overlap_ratio,     # 窗口重叠度
         )
 
     def forward(self, inferer: nn.Module, batch: Dict[str, Any]) -> None:
@@ -55,13 +55,16 @@ class Predictor(BasePredictor):
             nib.save(nifti, sava_path)
 
 def convert_from_multi_channel(probs: torch.Tensor) -> torch.Tensor:
+    # 将多通道 one-hot 概率图转为单通道标签图
     """ Convert multi-channel probabilities to single-channel. """
 
+    # 概率二值化
     seg = (probs > 0.5).to(torch.uint8)
 
     [batch_size, _, *dims] = seg.shape
     seg_out = torch.zeros([batch_size, *dims])
 
+    # 多通道到单通道的映射
     seg_out[seg[:, 1] == 1] = 2
     seg_out[seg[:, 0] == 1] = 1
     seg_out[seg[:, 2] == 1] = 4

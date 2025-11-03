@@ -17,7 +17,15 @@ def create_model(args: ModelArgument) -> SwinUNETR:
                 patch_size = args.patch_size,
                 input_channel=args.input_channel,
                 output_channel=args.hidden_channel,
-            )
-        )
+            ),
+            # TODO: 创新模块
+            # embed_options = MultiScalePatchEmbedding.Options(
+            #     num_dim=args.num_dim,
+            #     patch_size=args.patch_size,
+            #     input_channel=args.input_channel,
+            #     output_channel=args.hidden_channel,
+            #     kernel_sizes=(1, 3, 5),
+            # ),
+        ),
     )
     return SwinUNETR(opt)
